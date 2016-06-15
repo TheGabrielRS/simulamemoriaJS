@@ -17,28 +17,28 @@ window.onload = function iniciaMemoria()
         this.populaCache(),
         this.montaTabela = function()
         {
-            var tabela;
-            this.memoriaCache.forEach(function()
-            {
-                tabela += '<table>';
-                for(var x=0; x < this.tamanhoCache; x++)
-                {
-                    tabela += '<tr>';
-                    for(var y=0; y < this.tamanhoCache; y++)
-                        tabela += '<td>'+this.memoriaCache[x][y]+'</td>';
-                    tabela += '</tr>';
-                }
-                tabela += '</table>';
+            var tabela = '';
+            tabela += '<table id="tabelaCache">';
+            this.memoriaCache.forEach(function(valorMemoria, index, pagina)
+            {   
+	            tabela += '<tr>';
+	            valorMemoria.forEach(function(valorPosicao)
+	            {
+	            	tabela += '<td>'+valorPosicao+'</td>';
+	            });
+	            tabela += '</tr>';
             });
-            return tabela;
+            tabela += '</table>';
+        	return tabela;
         };
+
     } 
     
     var controlador = new ControladorCache(5);
     
     console.log(controlador.memoriaCache);
-    
+
     console.log(controlador.montaTabela());
     
-    document.write(controlador.montaTabela());
+	divCache.innerHTML = controlador.montaTabela();
 };
