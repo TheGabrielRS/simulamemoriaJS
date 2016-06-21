@@ -10,10 +10,15 @@ and open the template in the editor.
         <meta charset="UTF-8">
         <script src="memoria.js"></script>
         <style type="text/css">
-            #tabelaCache
+		
+			body{
+				font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+			}
+            td
             {
-                border: 1px solid black;
-                font-size: 40px;
+				font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+                border: 1px solid #FFFF88;
+                font-size: 25px;
                 border-style: solid;
                 border-color: black;
             }
@@ -21,16 +26,31 @@ and open the template in the editor.
    </head>
     <body>
         <div>
-            Memória Lógica
-            <div id="divLogica"></div>   
+            <h2>Memória Lógica</h2>
+            <div id="divLogica"></div>
+            <br>
+            <table>
+				
+				<tr>
+					<td> HIT </td>
+					<td id="hits" style="border: 1px solid #888888; text-align: left"><h2> </h2></td>
+				</tr>
+				<tr>
+					<td> MISS </td>
+					<td id="miss" style="border: 1px solid #888888"><h2> </h2></td>
+				</tr>
+			</table>
             
+            <br>
+            <h2>Memória Física</h2>
+				<div style="border : 1px solid #888888; display: inline-block">
+					<strong>Memoria Cache</strong>
+					<div id="divCache"></div>    
+					
+					<strong>Memoria RAM</strong>
+					<div id="divRAM"></div> 
+				</div>
             <br><br>
-            Memoria Cache
-            <div id="divCache"></div>    
-            
-            Memoria RAM
-            <div id="divRAM"></div> 
-            
             Processador
             <div id="divProcessador"></div>
 
@@ -42,13 +62,17 @@ and open the template in the editor.
             <input name="posx" type="text" maxlength="1" size="2" id="posx" class="searchField" autocomplete="off" title="" />
             <input name="posy" type="text" maxlength="1" size="2" id="posy" class="searchField" autocomplete="off" title="" />
             <input name="posz" type="text" maxlength="1" size="2" id="posz" class="searchField" autocomplete="off" title="" />
-            <input type="submit" name="botao" value="Posicao da Memoria" id="botao" class="buttonSearch" />
+            <input type="submit" name="botao" value="Ler" id="botao" class="buttonSearch" />
             <br><br>
             ESCREVER
-            <input name="posx" type="text" maxlength="8" size="20" id="dado" class="searchField" autocomplete="off" title="" />
+            <input name="dado" type="text" maxlength="8" size="20" id="dado" class="searchField" autocomplete="off" title="" />
             <input name="posx" type="text" maxlength="1" size="2" id="posx2" class="searchField" autocomplete="off" title="" />
             <input name="posy" type="text" maxlength="1" size="2" id="posy2" class="searchField" autocomplete="off" title="" />
-            <input type="submit" name="botao2" value="Posicao da Memoria" id="botao2" class="buttonSearch" />
+            <input type="submit" name="botao2" value="Escrever" id="botao2" class="buttonSearch" /> 
+            
+            <br><br>
+            ALEATÓRIO
+            <input type="submit" name="botao3" value="Comportamento aleatório" id="botao3" class="buttonSearch" /> 
 
         </div>
         
