@@ -3,7 +3,7 @@ window.onload = function iniciaSimulacao()
     //OBJETO PAGINA
     function Pagina(){
         this.inicializa = function(){
-            divLogica.innerHTML = mLogica.montaTabela();
+            divLogica.innerHTML = memorias[0].montaTabela();
             divCache.innerHTML = memorias[1].montaTabela();
             divRAM.innerHTML = memorias[2].montaTabela();
             divProcessador.innerHTML = '<table id="tabelaCache"><tr><td>' + "Nenhuma palavra" + '<td><tr></table>';
@@ -153,32 +153,58 @@ window.onload = function iniciaSimulacao()
         },
         this.retornaProcessador = function()
         {
-            // console.log(arguments);
             console.log(this.memoria[arguments[0][0]][arguments[0][1]][arguments[0][2]]);
             processador.palavraAtual = this.memoria[arguments[0][0]][arguments[0][1]][arguments[0][2]][0];
-            // console.log(this.memoria[pos[1]][pos[2]][pos[3]]);
-            // console.log(dado);
+
         }
     }
     
     //OBJETO PROCESSADOR 
     function Processador(){
         var palavraAtual;
+        this.atualizaMemoria = function()
+        {
+            if(arguments[0] == 1)
+            {   //Recebe qual a posição possui o LRU na memória enviada para a função
+                var lru = this.verificaLRU(memorias[1]);
+
+            }
+
+        }
+        this.verificaLRU = function() //Varre o array de memórias passado como parâmetro, retornando a posição onde há o LRU
+        {
+            var lru = [Number.MIN_VALUE];
+            console.log(lru);
+            for(var i in arguments[0])
+                for(var j in arguments[0][i])
+                    for(var k in arguments[0][i][j])
+                    {
+                        console.log(arguments[0][i][j][k]);
+                        if(arguments[0][i][j][k][1] > lru[0])
+                        {
+                            lru[0] = arguments[0][i][j][k][1]; //Valor do LRU
+                            lru[1] = k; //Coordenadas da matriz para a posição de LRU --precisa de debug
+                            lru[2] = j;
+                        }
+                    }
+            console.log(lru);
+            return lru;
+        }
     }
 
     var pagina = new Pagina();
     var processador = new Processador();
-    var memorias = [logica = new Memoria(1,6), cache = new Memoria(0,3), ram = new Memoria(0,3)];
+    var memorias = [logica = new Logica(), cache = new Memoria(0,3), ram = new Memoria(0,3)];
+    
+    logica.populaLogica(cache, ram);
 
-
-    mLogica = new Logica();
-    mLogica.populaLogica(cache, ram);
+    processador.atualizaMemoria(1);
 
     pagina.inicializa();
     
     //USUÁRIO
     document.getElementById('botao').onclick = function() {
-        mLogica.retornaProcessador(Array(document.getElementById('posx').value,document.getElementById('posy').value,document.getElementById('posz').value));
+        logica.retornaProcessador(Array(document.getElementById('posx').value,document.getElementById('posy').value,document.getElementById('posz').value));
         pagina.atualiza();
     }
     
