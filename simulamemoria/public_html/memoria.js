@@ -10,12 +10,12 @@ window.onload = function iniciaSimulacao()
         },
         this.atualiza = function(){
             divRAM.innerHTML = ram.montaTabela();
-			hits.innerHTML = logica.hit;
-			miss.innerHTML = logica.miss;
-            setTimeout(function(){
+            hits.innerHTML = logica.hit;
+            miss.innerHTML = logica.miss;
+           // setTimeout(function(){
                 divCache.innerHTML = cache.montaTabela();
-                divProcessador.innerHTML = '<table><tr><td>' + processador.palavraAtual + '</td></tr></table>';
-            }, 2000);
+                divProcessador.innerHTML = '<table><tr><td width="250" align="center">' + processador.palavraAtual + '</td></tr></table>';
+           // }, 2000);
         };
     }
     
@@ -72,9 +72,9 @@ window.onload = function iniciaSimulacao()
         },
         
         function substituiChar(str,pos,char){
-        	p1 = str.substring(0,pos-1);
-        	p2 =str.substring(pos,str.length);
-        	return p1+char+p2;
+            p1 = str.substring(0,pos-1);
+            p2 =str.substring(pos,str.length);
+            return p1+char+p2;
         },
         
         this.resgataRAM = function(pos){
@@ -97,8 +97,8 @@ window.onload = function iniciaSimulacao()
 
 
     function Logica(){
-		this.hit = 0,
-		this.miss = 0,
+        this.hit = 0,
+        this.miss = 0,
         this.memoria = [],
         this.populaLogica = function(){
             var cont = Number();
@@ -143,16 +143,16 @@ window.onload = function iniciaSimulacao()
             return validade;
         },
         
-        this.retornaProcessador = function()
+        this.retornaProcessador = function(pos)
         {
-			if(this.memoria[arguments[0][0]][arguments[0][1]][arguments[0][2]][0].charAt(0) == 0){
-				this.miss++;
-				processador.palavraAtual = "Palavra Inválida";
-			}else{
-				this.hit++;
-				processador.palavraAtual = this.memoria[arguments[0][0]][arguments[0][1]][arguments[0][2]][0];
-			}
-            return this.memoria[arguments[0][0]][arguments[0][1]][arguments[0][2]];
+            if(this.memoria[pos[0]][pos[1]][pos[2]][0].charAt(0) == 0){
+                this.miss++;
+                processador.palavraAtual = "Palavra Inválida";
+            }else{
+                this.hit++;
+                processador.palavraAtual = this.memoria[pos[0]][pos[1]][pos[2]][0];
+            }
+            return this.memoria[pos[0]][pos[1]][pos[2]];
         }
     }
     
@@ -185,36 +185,37 @@ window.onload = function iniciaSimulacao()
                             lru[2] = k; //idem acima
                             lru[3] = arguments[0][i][j][k][0]; //valor do espaço de memoria
                         }
+            lru[0] = 1;
             return lru;
         }
         this.aleatorio = function(){
-        	var vezes = 1000;
-        	var cont = 0;
-        	
-        	while(cont < vezes){
-        		setTimeout(function(){
-        			randomVect = new Array(Math.floor((Math.random() * 3)), Math.floor((Math.random() * 3)), Math.floor((Math.random() * 3)));
-        			if(randomVect[0] > 0)
-        	    	{
-        	    		processador.atualizaMemoria(ram.hierarquia, cache, ram, randomVect);
-        	    	}
-        	    	else
-        	    	{
-        	    		logica.retornaProcessador(randomVect);
-        	    	}
-        			console.log(cont);
-        	    	pagina.atualiza();
-                }, cont*10);
-        		cont++;
-        		console.log(cont<vezes);
-        		pagina.atualiza();
-        	}
+            var vezes = interacoes.value;
+            var cont = 0;
+            
+            while(cont < vezes){
+                setTimeout(function(){
+                    randomVect = new Array(Math.floor((Math.random() * 2)), Math.floor((Math.random() * 3)), Math.floor((Math.random() * 3)));
+                    if(randomVect[0] > 0)
+                    {
+                        processador.atualizaMemoria(ram.hierarquia, cache, ram, randomVect);
+                    }
+                    else
+                    {
+                        logica.retornaProcessador(randomVect);
+                    }
+                    console.log(cont);
+                    pagina.atualiza();
+                }, velocidade.value*cont);
+                cont++;
+                console.log(cont<vezes);
+                pagina.atualiza();
+            }
             
             
         }
     }
 
-	
+    
     var pagina = new Pagina();
     var processador = new Processador();
     var memorias = [logica = new Logica(), cache = new Memoria(0,3), ram = new Memoria(1,3)];
@@ -225,25 +226,25 @@ window.onload = function iniciaSimulacao()
     
     //USUÁRIO
     document.getElementById('botao').onclick = function() {
-    	if(document.getElementById('posx').value == 1)
-    	{
-    		processador.atualizaMemoria(ram.hierarquia, cache, ram, Array(document.getElementById('posx').value,document.getElementById('posy').value,document.getElementById('posz').value));
-    	}
-    	else
-    	{
-    		logica.retornaProcessador(Array(document.getElementById('posx').value,document.getElementById('posy').value,document.getElementById('posz').value));
-    	}
-    		
-    	pagina.atualiza();
+        if(document.getElementById('posx').value == 1)
+        {
+            processador.atualizaMemoria(ram.hierarquia, cache, ram, Array(document.getElementById('posx').value,document.getElementById('posy').value,document.getElementById('posz').value));
+        }
+        else
+        {
+            logica.retornaProcessador(Array(document.getElementById('posx').value,document.getElementById('posy').value,document.getElementById('posz').value));
+        }
+            
+        pagina.atualiza();
     }
     
     document.getElementById('botao2').onclick = function() {
-    	logica.escreveCache(Array(document.getElementById('posx2').value,document.getElementById('posy2').value), document.getElementById('dado').value);
+        logica.escreveCache(Array(document.getElementById('posx2').value,document.getElementById('posy2').value), document.getElementById('dado').value);
         
         pagina.atualiza();
     }
     
     document.getElementById('botao3').onclick = function() { 
-    	processador.aleatorio();
+        processador.aleatorio();
     }
 };
